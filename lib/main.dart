@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
 import 'package:untitled/models/news.model.dart';
 import 'package:untitled/utils/language.util.dart';
+import 'package:untitled/utils/theme.util.dart';
 import 'api/call.api.dart';
 import 'helpers/sharedPreferences.helper.dart';
 import 'modules/newsPage/view/newsPage.view.dart';
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // theme: ThemeData(fontFamily: FontFamily.),
       title: "App",
+      // themeMode: SharedPreferencesHelper.instance.getBool(ConstUtils.isDark) ?? false ? ThemeMode.dark : ThemeMode.light ,
+      theme: ThemesUtils.light,
+      darkTheme: ThemesUtils.dark,
       translations: LanguageUtil(),
       locale: const Locale("hi", "IN"),
       home: NewsPageView(),
