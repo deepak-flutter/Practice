@@ -6,13 +6,10 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
 import 'package:untitled/models/news.model.dart';
-import 'package:untitled/modules/youtube/view/youtubePlayer.view.dart';
 import 'package:untitled/utils/language.util.dart';
 import 'api/call.api.dart';
 import 'helpers/sharedPreferences.helper.dart';
 import 'modules/newsPage/view/newsPage.view.dart';
-import 'modules/share/view/share.view.dart';
-import 'modules/sliver/view/sliver.view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +35,6 @@ class MyHttpOverrides extends HttpOverrides {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
