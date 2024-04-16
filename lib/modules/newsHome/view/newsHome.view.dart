@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:untitled/utils/assets.utils.dart';
 import '../controller/newsHome.controller.dart';
 
 class NewsHomeView extends StatelessWidget {
@@ -131,44 +133,49 @@ class NewsHomeView extends StatelessWidget {
                     return Builder(
                       builder: (BuildContext context) {
                         return Obx(
-                          () => Column(
-                            children: [
-                              CircleAvatar(
-                                radius: 60,
-                                backgroundColor:
-                                    newsHomeController.activePage.value == e
-                                        ? Colors.deepOrange
-                                        : Colors.white70,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(100)),
-                                  child: Image.network(
-                                    "https://img.freepik.com/free-vector/indian-rupee-money-bag_23-2148003771.jpg?w=740&t=st=1708693319~exp=1708693919~hmac=fdf3d1224bc2eba5f02563751aea08cf4ac263660f9d2779d841b7446a5093c6",
-                                    fit: BoxFit.cover,
-                                    height: 115,
-                                    width: 115,
-                                    color:
-                                        newsHomeController.activePage.value == e
-                                            ? Colors.transparent
-                                            : Colors.grey,
-                                    colorBlendMode: BlendMode.screen,
+                          () => MaterialButton(
+                            onPressed: (){
+                              print("$e");
+                            },
+                            minWidth: 0,
+                            padding: EdgeInsets.zero,
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor:
+                                      newsHomeController.activePage.value == e
+                                          ? Colors.deepOrange
+                                          : Colors.white70,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(100)),
+                                    child: Lottie.asset(
+                                      AssetsUtils.getFoodLottie(),
+                                      reverse: false,
+                                      fit: BoxFit.contain,
+                                      height: 300,
+                                      width: 250,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                "Interim Budget 2024",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize:
-                                      newsHomeController.activePage.value == e
-                                          ? 16
-                                          : 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
+                                const SizedBox(height: 5),
+                                Text(
+                                  "Interim Budget 2024",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize:
+                                        newsHomeController.activePage.value == e
+                                            ? 16
+                                            : 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },

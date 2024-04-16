@@ -26,7 +26,14 @@ class CarouselSliderView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text("data"),
+          const Text(
+            "data",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          ),
           SizedBox(
             height: 200,
             child: ListView.separated(

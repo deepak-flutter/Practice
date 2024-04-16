@@ -6,11 +6,12 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
 import 'package:untitled/models/news.model.dart';
+import 'package:untitled/modules/newsHome/view/newsHome.view.dart';
 import 'package:untitled/utils/language.util.dart';
 import 'package:untitled/utils/theme.util.dart';
 import 'api/call.api.dart';
 import 'helpers/sharedPreferences.helper.dart';
-import 'modules/newsPage/view/newsPage.view.dart';
+import 'modules/carouselSlider/view/carouselSlider.view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemesUtils.dark,
       translations: LanguageUtil(),
       locale: const Locale("hi", "IN"),
-      home: NewsPageView(),
+      home: NewsHomeView(),
       // builder: (context, child) => ResponsiveBreakpoints.builder(
       //   child: ClampingScrollWrapper.builder(context, child!),
       //   breakpoints: [

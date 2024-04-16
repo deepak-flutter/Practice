@@ -7,6 +7,7 @@ class AssetsUtils {
   static getSparkleLottie() => "assets/lotties/sparkle.json";
   static getDogOnRocketLottie() => "assets/lotties/dogOnRocket.json";
   static getPhoneLottie() => "assets/lotties/phone.json";
+  static getFoodLottie() => "assets/lotties/foodAnimation.json";
   static getExitImage() => "assets/images/exitImage.png";
   static getCamera() => "assets/images/camera.jpg";
   static getDog() => "assets/images/dog.jpg";
