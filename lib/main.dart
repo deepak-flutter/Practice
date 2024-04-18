@@ -6,6 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
 import 'package:untitled/models/news.model.dart';
+import 'package:untitled/modules/foodSignup/view/foodSignup.view.dart';
 import 'package:untitled/modules/newsHome/view/newsHome.view.dart';
 import 'package:untitled/utils/language.util.dart';
 import 'package:untitled/utils/theme.util.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemesUtils.dark,
       translations: LanguageUtil(),
       locale: const Locale("hi", "IN"),
-      home: NewsHomeView(),
+      home: FoodSignupView(),
       // builder: (context, child) => ResponsiveBreakpoints.builder(
       //   child: ClampingScrollWrapper.builder(context, child!),
       //   breakpoints: [
