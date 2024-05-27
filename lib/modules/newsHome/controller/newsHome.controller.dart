@@ -2,13 +2,13 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:showcaseview/showcaseview.dart';
+import 'package:showcase_tutorial/showcase_tutorial.dart';
 import 'package:untitled/modules/hive/view/hive.view.dart';
-import 'package:untitled/modules/newsPage/view/newsPage.view.dart';
 import 'package:untitled/utils/routes.util.dart';
 
 class NewsHomeController extends GetxController {
   CarouselController carouselController = CarouselController();
+  RxBool isTourDialogVisible = false.obs;
 
   List<String> hottestTopicsNameList = [
     "Election 2024",
@@ -35,16 +35,30 @@ class NewsHomeController extends GetxController {
 
   RxInt activePage = 0.obs;
 
+  NewsHomeController() {
+    Future.delayed(10.seconds, () {
+      isTourDialogVisible.value = true;
+    });
+  }
+
   onPageChanged(int index, CarouselPageChangedReason reason) {
     print("$index $reason");
     activePage.value = index;
   }
 
   onMenuClick(BuildContext context) {
-    ShowCaseWidget.of(context).startShowCase([globalKeyZero, globalKeyOne, globalKeyTwo, globalKeyThree, globalKeyFour, globalKeyFive]);
+    isTourDialogVisible.value = false;
+    ShowCaseWidget.of(context).startShowCase([
+      globalKeyZero,
+      globalKeyOne,
+      globalKeyTwo,
+      globalKeyThree,
+      globalKeyFour,
+      globalKeyFive
+    ]);
   }
 
-  onExploreClick(){
-    RoutesUtil.to(()=>HiveView());
+  onExploreClick() {
+    RoutesUtil.to(() => HiveView());
   }
 }

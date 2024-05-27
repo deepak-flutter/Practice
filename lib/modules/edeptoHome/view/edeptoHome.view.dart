@@ -108,7 +108,8 @@ class EdeptoHomeView extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisSpacing: 10,
-                  childAspectRatio: 0.9),
+                  childAspectRatio: 0.9,
+              ),
               itemBuilder: (context, index) {
                 return SizedBox(
                   height: 120,

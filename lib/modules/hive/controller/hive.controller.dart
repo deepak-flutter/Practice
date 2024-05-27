@@ -7,10 +7,10 @@ import 'package:untitled/models/news.model.dart';
 class HiveController extends GetxController {
   HiveController() {
     print("Constructor");
-    // Future.delayed(const Duration(milliseconds: 250), () => apiCall(),);
+    Future.delayed(const Duration(milliseconds: 250), () => apiCall(),);
     // hiveCall();
-    // Future.delayed(const Duration(milliseconds: 300), () => isConnected());
-    // isConnected();
+    Future.delayed(const Duration(milliseconds: 300), () => isConnected());
+    isConnected();
     hiveGet();
     // hiveSet();
   }

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:appinio_social_share/appinio_social_share.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 import 'package:get/get.dart';

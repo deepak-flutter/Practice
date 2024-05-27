@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:showcaseview/showcaseview.dart';
+import 'package:showcase_tutorial/showcase_tutorial.dart';
 import 'package:untitled/modules/showcasePage/controller/showcasePage.controller.dart';
 
 class ShowcasePageView extends StatelessWidget {
   ShowcasePageView({super.key});
 
-  ShowcasePageController showcasePageController = ShowcasePageController();
+  final ShowcasePageController showcasePageController = ShowcasePageController();
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 2),
-        () => showcasePageController.onWantTourClicked(context));
+    // Future.delayed(const Duration(seconds: 2), () => showcasePageController.onWantTourClicked(context));
+    showcasePageController.init();
     return ShowCaseWidget(
       builder: Builder(
         builder: (context) => Scaffold(

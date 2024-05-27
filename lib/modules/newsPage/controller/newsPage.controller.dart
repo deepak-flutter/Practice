@@ -244,4 +244,5 @@ class NewsPageController extends GetxController {
       },
     );
   }
+
 }

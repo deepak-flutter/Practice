@@ -71,7 +71,7 @@ dependencies:
   swipedetector_nullsafety: ^2.0.0
   flutter_tts: ^3.8.5
   translator: ^1.0.0
-  showcaseview: ^2.0.3
+#  showcaseview: ^2.0.3
 #  youtube_player_iframe: ^5.1.1
   rive: ^0.12.4
   stacked_card_carousel: ^0.0.4
@@ -81,6 +81,8 @@ dependencies:
   chewie: ^1.7.5
   appinio_social_share: ^0.3.0
   flutter_share_me: ^1.4.0
+  showcase_tutorial: ^1.0.5
+  animated_introduction: ^1.0.3
 
 
 

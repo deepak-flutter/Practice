@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
-import 'package:showcaseview/showcaseview.dart';
+import 'package:showcase_tutorial/showcase_tutorial.dart';
 
 class ShowcasePageController extends GetxController {
   GlobalKey keyOne = GlobalKey();
@@ -13,7 +13,9 @@ class ShowcasePageController extends GetxController {
   init() {
     Future.delayed(
       const Duration(seconds: 1),
-      () => {isShowcaseNeeded.value = true},
+      () => {
+        isShowcaseNeeded.value = true,
+      },
     );
   }
 

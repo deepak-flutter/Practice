@@ -6,13 +6,16 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
 import 'package:untitled/models/news.model.dart';
-import 'package:untitled/modules/foodSignup/view/foodSignup.view.dart';
+import 'package:untitled/modules/edeptoHome/view/edeptoHome.view.dart';
+import 'package:untitled/modules/home/view/home.view.dart';
+import 'package:untitled/modules/introduction/view/introduction.view.dart';
 import 'package:untitled/modules/newsHome/view/newsHome.view.dart';
+import 'package:untitled/modules/newsPage/view/newsPage.view.dart';
+import 'package:untitled/modules/showcasePage/view/showcasePage.view.dart';
 import 'package:untitled/utils/language.util.dart';
 import 'package:untitled/utils/theme.util.dart';
 import 'api/call.api.dart';
 import 'helpers/sharedPreferences.helper.dart';
-import 'modules/carouselSlider/view/carouselSlider.view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +34,8 @@ class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
@@ -51,7 +55,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemesUtils.dark,
       translations: LanguageUtil(),
       locale: const Locale("hi", "IN"),
-      home: FoodSignupView(),
+      home: IntroductionView(),
       // builder: (context, child) => ResponsiveBreakpoints.builder(
       //   child: ClampingScrollWrapper.builder(context, child!),
       //   breakpoints: [
