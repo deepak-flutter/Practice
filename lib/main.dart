@@ -1,25 +1,29 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
+import 'package:untitled/local_service.dart';
 import 'package:untitled/models/news.model.dart';
-import 'package:untitled/modules/edeptoHome/view/edeptoHome.view.dart';
-import 'package:untitled/modules/home/view/home.view.dart';
+import 'package:untitled/modules/hive/view/hive.view.dart';
 import 'package:untitled/modules/introduction/view/introduction.view.dart';
-import 'package:untitled/modules/newsHome/view/newsHome.view.dart';
-import 'package:untitled/modules/newsPage/view/newsPage.view.dart';
-import 'package:untitled/modules/showcasePage/view/showcasePage.view.dart';
 import 'package:untitled/utils/language.util.dart';
 import 'package:untitled/utils/theme.util.dart';
 import 'api/call.api.dart';
+import 'firebase_options.dart';
 import 'helpers/sharedPreferences.helper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print(fcmToken);
+  LocalNotificationServices.initialize();
   await SharedPreferencesHelper.instance.init();
   ApiCall.configureDio();
   final appDocumentDirectory = await getApplicationDocumentsDirectory();

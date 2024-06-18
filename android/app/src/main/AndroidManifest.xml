@@ -19,10 +19,18 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+
     <application
         android:label="untitled"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <service android:name=".java.MyFirebaseMessagingService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -39,9 +47,17 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="pushnotification"
+                />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

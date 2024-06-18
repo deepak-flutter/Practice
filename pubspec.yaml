@@ -83,7 +83,9 @@ dependencies:
   flutter_share_me: ^1.4.0
   showcase_tutorial: ^1.0.5
   animated_introduction: ^1.0.3
-
+  firebase_core: ^3.1.0
+  firebase_messaging: ^15.0.1
+  flutter_local_notifications: ^17.1.2
 
 
 dev_dependencies:
