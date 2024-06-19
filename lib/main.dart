@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
 import 'package:untitled/local_service.dart';
 import 'package:untitled/models/news.model.dart';
-import 'package:untitled/modules/hive/view/hive.view.dart';
 import 'package:untitled/modules/introduction/view/introduction.view.dart';
+import 'package:untitled/service/notification.service.dart';
 import 'package:untitled/utils/language.util.dart';
 import 'package:untitled/utils/theme.util.dart';
 import 'api/call.api.dart';
@@ -21,9 +22,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print(fcmToken);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   LocalNotificationServices.initialize();
+  NotificationService().requestNotificationPermission();
+  NotificationService().firebaseInit();
+  NotificationService().setupInteractMessage();
+  NotificationService().isTokenRefresh();
+  NotificationService().getDeviceToken().then((value){
+    print("Device token: $value");
+  });
+  print(Platform.operatingSystem);
   await SharedPreferencesHelper.instance.init();
   ApiCall.configureDio();
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
@@ -32,6 +40,12 @@ Future<void> main() async {
   Hive.registerAdapter(ArticlesAdapter());
   Hive.registerAdapter(SourceAdapter());
   runApp(const MyApp());
+}
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print(message.notification!.title.toString());
 }
 
 class MyHttpOverrides extends HttpOverrides {

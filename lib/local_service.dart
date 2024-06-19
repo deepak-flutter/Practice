@@ -16,7 +16,7 @@ class LocalNotificationServices {
     );
   }
 
-  static void creatNotification(RemoteMessage message) async {
+  static void createNotification(RemoteMessage message) async {
     try {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const NotificationDetails notificationDetails = NotificationDetails(
