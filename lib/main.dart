@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:untitled/hiveCustom/user.dart';
 import 'package:untitled/local_service.dart';
@@ -31,7 +30,6 @@ Future<void> main() async {
   NotificationService().getDeviceToken().then((value){
     print("Device token: $value");
   });
-  print(Platform.operatingSystem);
   await SharedPreferencesHelper.instance.init();
   ApiCall.configureDio();
   final appDocumentDirectory = await getApplicationDocumentsDirectory();

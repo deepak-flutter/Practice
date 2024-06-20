@@ -1,13 +1,9 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
-import 'package:untitled/modules/home/view/home.view.dart';
 import 'package:untitled/modules/newsHome/view/newsHome.view.dart';
 import 'package:untitled/modules/newsPage/view/newsPage.view.dart';
 import 'package:untitled/utils/routes.util.dart';
