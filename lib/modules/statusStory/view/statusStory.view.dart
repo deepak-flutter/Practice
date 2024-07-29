@@ -13,18 +13,30 @@ class StatusStoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          MaterialButton(
-            onPressed: () => RoutesUtil.to(()=>StatusStoryPageView()),
-            child: StatusView(
-              centerImageUrl: "https://assets.mspimages.in/gear/wp-content/uploads/2023/04/fUNNY-3.jpg",
-              numberOfStatus: 4,
-              indexOfSeenStatus: 2,
-              padding: 5,
+      body: Center(
+        child: Column(
+          children: [
+            MaterialButton(
+              onPressed: () => RoutesUtil.to(() => StatusStoryPageView()),
+              child: StatusView(
+                centerImageUrl: "https://assets.mspimages.in/gear/wp-content/uploads/2023/04/fUNNY-3.jpg",
+                numberOfStatus: 4,
+                indexOfSeenStatus: 2,
+                padding: 5,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            MaterialButton(
+              onPressed: () => RoutesUtil.to(() => StatusStoryPageView()),
+              child: StatusView(
+                centerImageUrl: "https://assets.mspimages.in/gear/wp-content/uploads/2023/04/fUNNY-3.jpg",
+                numberOfStatus: 4,
+                indexOfSeenStatus: 2,
+                padding: 5,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
