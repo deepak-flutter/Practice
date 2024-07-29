@@ -9,7 +9,7 @@ class SnackbarHelper {
       colorText: Colors.white,
       backgroundColor: Colors.red,
       duration: const Duration(seconds: 3),
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.bottom,
     );
   }
 
@@ -18,7 +18,7 @@ class SnackbarHelper {
     colorText: Colors.white,
     backgroundColor: Colors.green,
       duration: const Duration(seconds: 3),
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.bottom,
     );
   }
 }

@@ -74,8 +74,7 @@ class CollapsibleSidebarLanguageController extends GetxController {
     this.category = category;
     hiveGet();
     isConnected();
-    print(
-        "-----------------------------------------------------------------------------End------------------------------------------------------------");
+    print("-----------------------------------------------------------------------------End------------------------------------------------------------");
   }
 
   CollapsibleSidebarLanguageController() {

@@ -41,8 +41,7 @@ class ShowcasePageView extends StatelessWidget {
                 title: "Button",
                 description: "Click to perform action",
                 child: MaterialButton(
-                  onPressed: () =>
-                      showcasePageController.onWantTourClicked(context),
+                  onPressed: () => showcasePageController.onWantTourClicked(context),
                   color: Colors.blue,
                   height: 50,
                   minWidth: 0,
@@ -51,8 +50,7 @@ class ShowcasePageView extends StatelessWidget {
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: const Text("Click"),
                 ),
               ),

@@ -6,6 +6,8 @@ import 'package:showcase_tutorial/showcase_tutorial.dart';
 import 'package:untitled/modules/hive/view/hive.view.dart';
 import 'package:untitled/utils/routes.util.dart';
 
+import '../../newsPage/view/newsPage.view.dart';
+
 class NewsHomeController extends GetxController {
   CarouselController carouselController = CarouselController();
   RxBool isTourDialogVisible = false.obs;
@@ -59,6 +61,6 @@ class NewsHomeController extends GetxController {
   }
 
   onExploreClick() {
-    RoutesUtil.to(() => HiveView());
+    RoutesUtil.to(() => NewsPageView());
   }
 }

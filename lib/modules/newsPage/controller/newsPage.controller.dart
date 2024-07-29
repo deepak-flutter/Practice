@@ -1,15 +1,18 @@
+import 'dart:ui';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 import 'package:translator/translator.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:untitled/api/call.api.dart';
 import 'package:untitled/helpers/snackbar.helper.dart';
-import 'package:untitled/utils/routes.util.dart';
 import '../../../models/news.model.dart';
-import '../../inApp/view/inApp.view.dart';
 
 class NewsPageController extends GetxController {
   final FlutterTts flutterTts = FlutterTts();
@@ -59,15 +62,39 @@ class NewsPageController extends GetxController {
 
   PageController pageController = PageController();
 
+  // MobAd
+  late BannerAd bannerAd;
+  late NativeAd nativeAd;
+  late InterstitialAd interstitialAd;
+  RxBool isBannerAdLoaded = false.obs;
+  RxBool isNativeAdLoaded = false.obs;
+  RxBool isInterstitialAdLoaded = false.obs;
+  var bannerAdUnitId =
+      "ca-app-pub-3940256099942544/9214589741"; // testing ad id
+  var nativeAdUnitIdList = [
+    "ca-app-pub-3940256099942544/2247696110",
+    "ca-app-pub-3940256099942544/2247696110"
+  ]; // testing ad id
+  var interstitialAdUnitId =
+      "ca-app-pub-3940256099942544/1033173712"; // testing ad id
+  int currentId = 0;
+
   init(String category) {
     this.category = category;
+    initBannerAd();
     // hiveGet();
     // isConnected();
+    print("init");
+    createTutorial();
+    Future.delayed(1.seconds, () {
+      showTutorial();
+    },);
   }
 
   NewsPageController() {
     pageController.addListener(() {
-      if (pageController.position.userScrollDirection == ScrollDirection.reverse) {
+      if (pageController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
         isBottomBarVisible.value = false;
       } else {
         isBottomBarVisible.value = true;
@@ -76,6 +103,171 @@ class NewsPageController extends GetxController {
     super.onInit();
 
     isConnected();
+  }
+
+  late TutorialCoachMark tutorialCoachMark;
+  GlobalKey keyBottomNavigation1 = GlobalKey();
+
+  showTutorial() {
+    Logger().i("showTutorial");
+    tutorialCoachMark.show(context: Get.context!);
+  }
+
+  createTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: createTargets(),
+      colorShadow: Get.context!.theme.colorScheme.surfaceTint,
+      textSkip: "SKIP",
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () {
+        print("finish");
+      },
+      onClickTarget: (p0) {
+        print("onClickTarget: $p0");
+      },
+      onClickTargetWithTapPosition: (p0, p1) {
+        print("onClickTargetWithTapPosition: $p0 $p1");
+      },
+      onClickOverlay: (p0) {
+        print("onClickOverlay: $p0");
+      },
+      onSkip: () {
+        print("skip");
+        return true;
+      },
+    );
+  }
+
+  List<TargetFocus> createTargets() {
+    List<TargetFocus> targets = [];
+    targets.add(TargetFocus(
+        identify: "keyBottomNavigation1",
+        keyTarget: keyBottomNavigation1,
+        alignSkip: Alignment.topRight,
+        enableOverlayTab: true,
+        contents: [
+          TargetContent(
+              align: ContentAlign.top,
+              builder: (context, controller) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Show app tour",
+                      style: TextStyle(
+                        color: context.theme.colorScheme.onPrimaryContainer,
+                      ),
+                    )
+                  ],
+                );
+              })
+        ]));
+
+    return targets;
+  }
+
+  initBannerAd() {
+    bannerAd = BannerAd(
+      size: AdSize.banner,
+      adUnitId: bannerAdUnitId,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          isBannerAdLoaded.value = true;
+          print(ad);
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+          print("Banner Ad Error: $ad $error");
+        },
+      ),
+      request: const AdRequest(),
+    );
+
+    // nativeAd = NativeAd(
+    //   adUnitId: nativeAdUnitIdList[0],
+    //   listener: NativeAdListener(
+    //     onAdLoaded: (ad) {
+    //       isNativeAdLoaded.value = true;
+    //     },
+    //     onAdFailedToLoad: (ad, error) {
+    //       isNativeAdLoaded.value = false;
+    //       ad.dispose();
+    //       print("Native Ad Error: $ad $error");
+    //     },
+    //   ),
+    //   request: const AdManagerAdRequest(),
+    //   nativeTemplateStyle: NativeTemplateStyle(
+    //     templateType: TemplateType.medium,
+    //     cornerRadius: 100,
+    //     mainBackgroundColor: Colors.red
+    //   ),
+    //   nativeAdOptions: NativeAdOptions(
+    //     adChoicesPlacement: AdChoicesPlacement.topRightCorner,
+    //     mediaAspectRatio: MediaAspectRatio.portrait,
+    //     requestCustomMuteThisAd: true,
+    //     shouldRequestMultipleImages: true,
+    //     shouldReturnUrlsForImageAssets: true,
+    //     videoOptions: VideoOptions(
+    //       clickToExpandRequested: false,
+    //       customControlsRequested: false,
+    //       startMuted: true,
+    //     ),
+    //   ),
+    // );
+
+    InterstitialAd.load(
+        adUnitId: interstitialAdUnitId,
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            interstitialAd = ad;
+            isInterstitialAdLoaded.value = true;
+          },
+          onAdFailedToLoad: (error) {
+            interstitialAd.dispose();
+            print("Interstitial ad error: $error");
+          },
+        ));
+
+    // bannerAd.load();
+    // nativeAd.load();
+  }
+
+  initNativeAd(String id) {
+    nativeAd = NativeAd(
+      adUnitId: id,
+      listener: NativeAdListener(
+        onAdLoaded: (ad) {
+          isNativeAdLoaded.value = true;
+        },
+        onAdFailedToLoad: (ad, error) {
+          isNativeAdLoaded.value = false;
+          ad.dispose();
+          print("Native Ad Error: $ad $error");
+        },
+      ),
+      request: const AdManagerAdRequest(),
+      nativeTemplateStyle: NativeTemplateStyle(
+          templateType: TemplateType.medium,
+          cornerRadius: 100,
+          mainBackgroundColor: Colors.red),
+      nativeAdOptions: NativeAdOptions(
+        adChoicesPlacement: AdChoicesPlacement.topRightCorner,
+        mediaAspectRatio: MediaAspectRatio.portrait,
+        requestCustomMuteThisAd: true,
+        shouldRequestMultipleImages: true,
+        shouldReturnUrlsForImageAssets: true,
+        videoOptions: VideoOptions(
+          clickToExpandRequested: false,
+          customControlsRequested: false,
+          startMuted: true,
+        ),
+      ),
+    );
+
+    nativeAd.load();
   }
 
   void isConnected({int page = 0}) async {
@@ -92,8 +284,7 @@ class NewsPageController extends GetxController {
       //   }
       //   apiCall(category: category, page: pagination);
       // }
-    }
-    else {
+    } else {
       // if (newsList!.isEmpty) {
       //   hiveGet();
       // }
@@ -108,7 +299,7 @@ class NewsPageController extends GetxController {
     if (newsRes.status == "ok") {
       print("Api data length: ${newsRes.articles?.length}");
       // hivePut(newsRes.articles ?? []);
-      
+
       if (newsRes.articles!.isNotEmpty) {
         hivePut(newsRes.articles!);
         hiveGet();
@@ -121,7 +312,7 @@ class NewsPageController extends GetxController {
   onPageChange(int page) {
     print("${page + 1} ${newsList?.length}");
     isConnected(page: page);
-    stopSpeaking();
+    // stopSpeaking();
     // if (!isDataAvailable) return;
     if ((page == (totalPages.value - 6)) &&
         (categoryList.length != categoryIndex)) {
@@ -130,10 +321,26 @@ class NewsPageController extends GetxController {
     if (page == (newsList!.length - 1)) {
       SnackbarHelper.error("End of page");
     }
+
+    if (page % 5 == 0) {
+      print("object");
+      if (currentId == 0) {
+        initNativeAd(nativeAdUnitIdList[0]);
+        currentId = 1;
+      } else if (currentId == 1) {
+        initNativeAd(nativeAdUnitIdList[1]);
+        currentId = 0;
+      }
+    }
   }
 
   onReadMoreClick(String? source) async {
-    RoutesUtil.to(() => InAppView(url: source ?? "https://api.flutter.dev/flutter/widgets/PageView-class.html"));
+    if (isInterstitialAdLoaded.value) {
+      interstitialAd.show();
+    }
+    // RoutesUtil.to(() => InAppView(
+    //     url: source ??
+    //         "https://api.flutter.dev/flutter/widgets/PageView-class.html"));
 
     // var url = Uri.parse("https://api.flutter.dev/flutter/widgets/PageView-class.html" ?? "");
     // if (await canLaunchUrl(url)) {
@@ -156,7 +363,6 @@ class NewsPageController extends GetxController {
     var res = box.get("newsData");
     print(res.sublist(10, 20));
 
-
     if (res == null) {
       SnackbarHelper.error("No Data Found");
     } else {
@@ -175,16 +381,20 @@ class NewsPageController extends GetxController {
       await flutterTts.pause();
       return;
     }
-    print("Translating");
-    var translation = await translator.translate(text, to: "mr");
-    print(translation);
+    // print("Translating");
+    // var translation = await translator.translate(text, to: "mr");
+    // print(translation);
 
     print("Speaking");
-    await flutterTts.setVoice({"name": "mr-in-x-mrf-network", "locale": "mr-IN"});
-    await flutterTts.setLanguage(languageList[2]);
-    await flutterTts.setSpeechRate(0.5);
-    await flutterTts.setPitch(1);
-    await flutterTts.speak(translation.toString());
+    // await flutterTts.setVoice({"name": "mr-in-x-mrf-network", "locale": "mr-IN"});
+    // await flutterTts.setLanguage(languageList[0]);
+    // print(await flutterTts.getMaxSpeechInputLength);
+    // print(await flutterTts.getEngines);
+    // print(await flutterTts.getDefaultEngine);
+    await flutterTts.setSilence(0);
+    // await flutterTts.setSpeechRate(0.5);
+    // await flutterTts.setPitch(1);
+    await flutterTts.speak(text);
     flutterTts.setCompletionHandler(() => stopSpeaking());
   }
 
@@ -244,5 +454,4 @@ class NewsPageController extends GetxController {
       },
     );
   }
-
 }

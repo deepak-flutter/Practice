@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:untitled/modules/collapsibleSidebarLanguage/controller/collapsibleSidebarLanguage.controller.dart';
 import 'package:untitled/utils/assets.utils.dart';
 
-class CollapsibleSidebarLanguageView extends StatelessWidget {
-  CollapsibleSidebarLanguageView({super.key, this.category = "general"});
+class CollapsibleSidebarLanguageView extends StatelessWidget {CollapsibleSidebarLanguageView({super.key, this.category = "general"});
 
   String category = "";
   final CollapsibleSidebarLanguageController

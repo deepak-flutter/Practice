@@ -1,16 +1,30 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:untitled/modules/newsHome/view/newsHome.view.dart';
 import 'package:untitled/modules/newsPage/view/newsPage.view.dart';
 import 'package:untitled/utils/routes.util.dart';
 
 class NotificationService {
+  static final NotificationService _singleton = NotificationService._internal();
+  late final NotificationService prefs;
+
+  static NotificationService get instance => _singleton;
+
+  factory NotificationService() {
+    return _singleton;
+  }
+
+  NotificationService._internal();
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   void requestNotificationPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
@@ -34,6 +48,10 @@ class NotificationService {
     }
   }
 
+  subscribeToTopic() {
+    messaging.subscribeToTopic("topic");
+  }
+
   void initLocalNotifications(BuildContext context, RemoteMessage message) async {
     var androidInitializationSettings = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
@@ -43,10 +61,10 @@ class NotificationService {
       iOS: iosInitializationSettings,
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSetting,
-        onDidReceiveNotificationResponse: (payload) {
-          handleMessage(context, message);
-        });
+    await flutterLocalNotificationsPlugin.initialize(initializationSetting, onDidReceiveNotificationResponse: (payload) {
+      Logger().i("Foreground: $payload");
+      handleMessage(context, message);
+    });
   }
 
   void firebaseInit() {
@@ -57,7 +75,7 @@ class NotificationService {
       print(message.data['type']);
       print(message.data['id']);
 
-      if(Platform.isAndroid){
+      if (Platform.isAndroid) {
         initLocalNotifications(Get.context!, message);
       }
       showNotification(message);
@@ -65,9 +83,10 @@ class NotificationService {
   }
 
   Future<void> showNotification(RemoteMessage message) async {
+    Logger().i("showNotification: $message");
     AndroidNotificationChannel channel = AndroidNotificationChannel(
-      // Random.secure().nextInt(100000).toString(),
-      1.toString(),
+      Random.secure().nextInt(100000).toString(),
+      // 1.toString(),
       "High Importance Notification",
       importance: Importance.max,
     );
@@ -79,6 +98,15 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
       ticker: 'ticker',
+      playSound: true,
+      sound: const RawResourceAndroidNotificationSound('notification'),
+      category: AndroidNotificationCategory.recommendation,
+      actions: [
+        const AndroidNotificationAction("id", "title", inputs: [
+          AndroidNotificationActionInput(allowFreeFormInput: true, label: "label"),
+          AndroidNotificationActionInput(allowFreeFormInput: true, label: "label"),
+        ]),
+      ],
     );
 
     const DarwinNotificationDetails darwinNotificationDetails = DarwinNotificationDetails(
@@ -117,23 +145,31 @@ class NotificationService {
   }
 
   Future<void> setupInteractMessage() async {
-    // when app is terminated
-    RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    Future.delayed(
+      300.milliseconds,
+      () async {
+        // when app is terminated
+        RemoteMessage? initialMessage =
+            await FirebaseMessaging.instance.getInitialMessage();
 
-    if(initialMessage != null) {
-      handleMessage(Get.context!, initialMessage);
-    }
+        if (initialMessage != null) {
+          Logger().i("Terminated: $initialMessage");
+          handleMessage(Get.context!, initialMessage);
+        }
 
-    // when app is in background
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      handleMessage(Get.context!, event);
-    });
+        // when app is in background
+        FirebaseMessaging.onMessageOpenedApp.listen((event) {
+          Logger().i("Background: $event");
+          handleMessage(Get.context!, event);
+        });
+      },
+    );
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
-    if(message.data["type"] == "message"){
-      RoutesUtil.offAll(()=>NewsPageView()).then((value)=>RoutesUtil.offAll(()=>NewsHomeView()));
+    if (message.data["type"] == "message") {
+      RoutesUtil.offAll(() => NewsPageView())
+          .then((value) => RoutesUtil.offAll(() => NewsHomeView()));
     }
   }
-
 }

@@ -14,7 +14,8 @@ class ShareView extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: TextField(
             readOnly: true,
-            onTap: () => shareController.onShareClick("title"),
+            onTap: () => shareController.onWhatsappShareClick(),
+            // onTap: () => shareController.onShareClick("title"),
             decoration: const InputDecoration(
               suffixIcon: Icon(Icons.share_rounded, size: 20,),
               hintText: "APQ848",
